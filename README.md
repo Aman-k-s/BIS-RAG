@@ -103,18 +103,38 @@ Important safety rules:
 
 ## 4. Setup instructions
 
-### Python
+### Prerequisites
 
-Use the same Python interpreter consistently
+- Python 3.10 or newer (use the same interpreter consistently for install, setup, and run)
+- The official BIS dataset PDF placed at `data/dataset.pdf` before running `setup.py`
+- Internet access on first run (the embedding model `sentence-transformers/all-MiniLM-L6-v2` is downloaded once and cached locally)
 
-### Install dependencies
+### Step 1 — Create and activate a virtual environment (recommended)
+
 ```bash
+python -m venv .venv
+# Windows (PowerShell)
+.\.venv\Scripts\Activate.ps1
+# macOS / Linux
+source .venv/bin/activate
+```
+
+### Step 2 — Install dependencies
+
+```bash
+python -m pip install --upgrade pip
 python -m pip install -r requirements.txt
 ```
-### Build retrieval artifacts
+
+### Step 3 — Build retrieval artifacts
+
+Make sure `data/dataset.pdf` exists, then run:
+
 ```bash
 python setup.py
 ```
+
+This produces `standards_db.json`, `faiss_index.bin`, `bm25_index.pkl`, `index_ids.json`, and `index_metadata.json` inside `data/`. If those files already exist, `setup.py` skips the rebuild.
 ## 5. API key setup
 
 The project supports:
@@ -162,9 +182,9 @@ python inference.py --input data/public_test_set.json --output data/results.json
 
 ## 7. Evaluation
 
-Use the provided evaluation logic:
+Use the provided evaluation logic (the script lives in the repo root):
 ```bash
-python data/eval_script.py --results data/results.json
+python eval_script.py --results data/results.json
 ```
 Metrics:
 
@@ -201,6 +221,11 @@ python -m uvicorn app:app --reload
 Then open:
 
 - http://127.0.0.1:8000
+
+Notes:
+
+- On first launch the app will auto-run `setup.py` if any retrieval artifact under `data/` is missing, so the very first start may take longer.
+- Without a `.env` file the app still works — the LLM rationale gracefully falls back to a deterministic explanation.
 
 The web app includes:
 
@@ -260,5 +285,5 @@ The heaviest local step is embedding/index build during `setup.py`. Runtime infe
 ```bash
 python setup.py
 python inference.py --input data/public_test_set.json --output data/results.json
-python data/eval_script.py --results data/results.json
+python eval_script.py --results data/results.json
 ```

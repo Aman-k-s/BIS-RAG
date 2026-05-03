@@ -24,7 +24,7 @@ def normalize_std(std_string: str) -> str:
 
 class RationaleGenerator:
     MAX_LLM_RETRIES = 3
-    RETRY_DELAY_SECONDS = 0.8
+    RETRY_BASE_DELAY_SECONDS = 0.2
 
     def __init__(self) -> None:
         load_dotenv()
@@ -167,7 +167,7 @@ class RationaleGenerator:
             except Exception as exc:
                 last_exc = exc
                 if attempt < self.MAX_LLM_RETRIES:
-                    time.sleep(self.RETRY_DELAY_SECONDS)
+                    time.sleep(self.RETRY_BASE_DELAY_SECONDS * (2 ** (attempt - 1)))
 
         self.last_error = str(last_exc) if last_exc else "Unknown LLM call failure."
         return False

@@ -14,7 +14,11 @@ def rerank(query: str, candidates: List[Dict[str, object]], top_k: int = 5) -> L
 
     for candidate in candidates:
         record = candidate["record"]
-        text = f"{record['title']} {record['scope']}".lower()
+        cached_text = record.get("_lower_text") if isinstance(record, dict) else None
+        if isinstance(cached_text, str):
+            text = cached_text
+        else:
+            text = f"{record['title']} {record['scope']}".lower()
 
         if grade and grade in text:
             candidate["score"] += 0.45
