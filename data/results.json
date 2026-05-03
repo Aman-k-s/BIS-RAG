@@ -12,23 +12,7 @@
       "IS 12330: 1988",
       "IS 2645: 2003"
     ],
-    "rationale": "The most relevant standard is IS 269: 1989, as it specifically covers the manufacture and chemical and physical requirements of 33 grade ordinary Portland cement. This standard directly addresses the product in question, making it the most applicable standard for the enterprise's product.",
-    "llm": {
-      "provider": "groq",
-      "model_name": "llama-3.3-70b-versatile",
-      "llm_enabled": "true",
-      "status": "ready",
-      "last_generation_mode": "llm",
-      "last_error": ""
-    },
-    "timing_breakdown_seconds": {
-      "retrieval": 0.2226,
-      "disambiguation": 0.0,
-      "reranking": 0.0002,
-      "rationale_generation": 0.9932,
-      "total": 1.2159
-    },
-    "latency_seconds": 1.2159
+    "latency_seconds": 0.0438
   },
   {
     "id": "PUB-02",
@@ -43,23 +27,7 @@
       "IS 3182: 1986",
       "IS 2686: 1977"
     ],
-    "rationale": "The most relevant standard is IS 383: 1970, as it specifically deals with coarse and fine aggregates from natural sources for use in structural concrete. This standard is directly applicable to the query, which requires compliance with regulations for coarse and fine aggregates derived from natural sources intended for use in structural concrete.",
-    "llm": {
-      "provider": "groq",
-      "model_name": "llama-3.3-70b-versatile",
-      "llm_enabled": "true",
-      "status": "ready",
-      "last_generation_mode": "llm",
-      "last_error": ""
-    },
-    "timing_breakdown_seconds": {
-      "retrieval": 0.0793,
-      "disambiguation": 0.0,
-      "reranking": 0.0001,
-      "rationale_generation": 0.4858,
-      "total": 0.5653
-    },
-    "latency_seconds": 0.5653
+    "latency_seconds": 0.0232
   },
   {
     "id": "PUB-03",
@@ -74,23 +42,7 @@
       "IS 7322: 1985",
       "IS 6523: 1983"
     ],
-    "rationale": "The most relevant standard is IS 458: 2003, as it specifically covers the requirements for precast concrete pipes, both with and without reinforcement, used for water mains. This standard is directly applicable to the query, providing specifications for the manufacturing of precast concrete pipes for water mains, making it the most suitable choice.",
-    "llm": {
-      "provider": "groq",
-      "model_name": "llama-3.3-70b-versatile",
-      "llm_enabled": "true",
-      "status": "ready",
-      "last_generation_mode": "llm",
-      "last_error": ""
-    },
-    "timing_breakdown_seconds": {
-      "retrieval": 0.0431,
-      "disambiguation": 0.0,
-      "reranking": 0.0002,
-      "rationale_generation": 0.4137,
-      "total": 0.457
-    },
-    "latency_seconds": 0.457
+    "latency_seconds": 0.0193
   },
   {
     "id": "PUB-04",
@@ -105,23 +57,7 @@
       "IS 3115: 1992",
       "IS 2185 (Part 3): 1984"
     ],
-    "rationale": "The most relevant standard is IS 2185 (Part 2): 1983, as it specifically covers the dimensions and physical requirements of hollow and solid lightweight concrete blocks. This standard is directly applicable to the company's new product line, outlining the classification, tolerances, and grades of lightweight concrete masonry units.",
-    "llm": {
-      "provider": "groq",
-      "model_name": "llama-3.3-70b-versatile",
-      "llm_enabled": "true",
-      "status": "ready",
-      "last_generation_mode": "llm",
-      "last_error": ""
-    },
-    "timing_breakdown_seconds": {
-      "retrieval": 0.0353,
-      "disambiguation": 0.0,
-      "reranking": 0.0002,
-      "rationale_generation": 0.3922,
-      "total": 0.4277
-    },
-    "latency_seconds": 0.4277
+    "latency_seconds": 0.0228
   },
   {
     "id": "PUB-05",
@@ -136,23 +72,7 @@
       "IS 2096: 1992",
       "IS 10388: 1982"
     ],
-    "rationale": "The most relevant standard is IS 459: 1992, as it specifically covers corrugated and semi-corrugated asbestos cement sheets used for roofing and cladding, aligning with the query's requirements. This standard is directly applicable because it details the specifications, tests, and dimensions for these specific types of sheets, making it the most suitable choice.",
-    "llm": {
-      "provider": "groq",
-      "model_name": "llama-3.3-70b-versatile",
-      "llm_enabled": "true",
-      "status": "ready",
-      "last_generation_mode": "llm",
-      "last_error": ""
-    },
-    "timing_breakdown_seconds": {
-      "retrieval": 0.0604,
-      "disambiguation": 0.0,
-      "reranking": 0.0005,
-      "rationale_generation": 0.521,
-      "total": 0.582
-    },
-    "latency_seconds": 0.582
+    "latency_seconds": 0.0206
   },
   {
     "id": "PUB-06",
@@ -167,23 +87,7 @@
       "IS 3677: 1985",
       "IS 1489 (Part 1): 1991"
     ],
-    "rationale": "The most relevant standard is IS 455: 1989, as it specifically covers the manufacture, chemical, and physical requirements for Portland slag cement. This standard directly addresses the query, providing the necessary guidelines for Portland slag cement, making it the most applicable standard in this context.",
-    "llm": {
-      "provider": "groq",
-      "model_name": "llama-3.3-70b-versatile",
-      "llm_enabled": "true",
-      "status": "ready",
-      "last_generation_mode": "llm",
-      "last_error": ""
-    },
-    "timing_breakdown_seconds": {
-      "retrieval": 0.0318,
-      "disambiguation": 0.0,
-      "reranking": 0.0001,
-      "rationale_generation": 0.4474,
-      "total": 0.4793
-    },
-    "latency_seconds": 0.4793
+    "latency_seconds": 0.0186
   },
   {
     "id": "PUB-07",
@@ -198,23 +102,7 @@
       "IS 12269: 1987",
       "IS 8112: 1989"
     ],
-    "rationale": "The most relevant standard is IS 1489 (Part 2): 1991, as it specifically covers the manufacture, physical, and chemical requirements of Portland pozzolana cement that is calcined clay based. This standard directly addresses the product in question, making it the most applicable standard for the given context.",
-    "llm": {
-      "provider": "groq",
-      "model_name": "llama-3.3-70b-versatile",
-      "llm_enabled": "true",
-      "status": "ready",
-      "last_generation_mode": "llm",
-      "last_error": ""
-    },
-    "timing_breakdown_seconds": {
-      "retrieval": 0.0856,
-      "disambiguation": 0.0001,
-      "reranking": 0.0003,
-      "rationale_generation": 0.5261,
-      "total": 0.612
-    },
-    "latency_seconds": 0.612
+    "latency_seconds": 0.0239
   },
   {
     "id": "PUB-08",
@@ -229,23 +117,7 @@
       "IS 2185 (Part 2): 1983",
       "IS 4832 (Part 3): 1968"
     ],
-    "rationale": "The most relevant standard is IS 3466: 1988, as it specifically covers the requirements for masonry cement used for general purposes where mortars for masonry are required, but not intended for structural concrete. This standard aligns with the query's description of the product's intended use, making it the most applicable standard.",
-    "llm": {
-      "provider": "groq",
-      "model_name": "llama-3.3-70b-versatile",
-      "llm_enabled": "true",
-      "status": "ready",
-      "last_generation_mode": "llm",
-      "last_error": ""
-    },
-    "timing_breakdown_seconds": {
-      "retrieval": 0.0691,
-      "disambiguation": 0.0,
-      "reranking": 0.0005,
-      "rationale_generation": 0.5497,
-      "total": 0.6193
-    },
-    "latency_seconds": 0.6193
+    "latency_seconds": 0.0212
   },
   {
     "id": "PUB-09",
@@ -260,23 +132,7 @@
       "IS 7834 (Part 7): 1987",
       "IS 875 (Part 1): 1987"
     ],
-    "rationale": "The most relevant standard is IS 6909: 1990, as it specifically details the composition, manufacture, and testing of supersulphated cement. This standard is directly applicable to the query, which is looking for requirements for supersulphated cement, particularly for marine works or aggressive water conditions.",
-    "llm": {
-      "provider": "groq",
-      "model_name": "llama-3.3-70b-versatile",
-      "llm_enabled": "true",
-      "status": "ready",
-      "last_generation_mode": "llm",
-      "last_error": ""
-    },
-    "timing_breakdown_seconds": {
-      "retrieval": 0.1048,
-      "disambiguation": 0.0,
-      "reranking": 0.0006,
-      "rationale_generation": 0.5056,
-      "total": 0.6111
-    },
-    "latency_seconds": 0.6111
+    "latency_seconds": 0.0246
   },
   {
     "id": "PUB-10",
@@ -291,22 +147,6 @@
       "IS 1489 (Part 2): 1991",
       "IS 1489 (Part 1): 1991"
     ],
-    "rationale": "The most relevant standard is IS 8042: 1989, as it specifically governs the physical and chemical requirements of White Portland Cement. This standard is directly applicable to the product in question, which is White Portland cement for architectural and decorative purposes.",
-    "llm": {
-      "provider": "groq",
-      "model_name": "llama-3.3-70b-versatile",
-      "llm_enabled": "true",
-      "status": "ready",
-      "last_generation_mode": "llm",
-      "last_error": ""
-    },
-    "timing_breakdown_seconds": {
-      "retrieval": 0.0682,
-      "disambiguation": 0.0,
-      "reranking": 0.0004,
-      "rationale_generation": 0.3433,
-      "total": 0.4119
-    },
-    "latency_seconds": 0.4119
+    "latency_seconds": 0.02
   }
 ]

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BIS Standards Recommendation Engine</title>
+  <link rel="stylesheet" href="/assets/styles.css">
+</head>
+<body>
+  <div class="background-grid"></div>
+  <div class="background-glow background-glow-left"></div>
+  <div class="background-glow background-glow-right"></div>
+  <main class="shell">
+    <section class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow">BIS Hackathon RAG Demo</p>
+        <h1>Find the right BIS standard in seconds.</h1>
+        <p class="lede">Hybrid retrieval for compliance search, grounded reasoning for explainability, and a submission-safe pipeline behind the scenes.</p>
+      </div>
+      <div class="hero-panel">
+        <div class="chip">Hybrid Retrieval</div>
+        <div class="chip">Grounded LLM Reasoning</div>
+        <div class="chip">Live Latency View</div>
+      </div>
+    </section>
+
+    <section class="workspace">
+      <form id="query-form" class="query-card">
+        <label class="label" for="query">Product / compliance query</label>
+        <textarea id="query" name="query" rows="5" placeholder="Example: Which BIS standard governs lightweight concrete masonry units with drying shrinkage and moisture movement requirements?"></textarea>
+
+        <label class="label" for="expected_standard">Expected standard for scoring (optional)</label>
+        <input id="expected_standard" name="expected_standard" type="text" placeholder="Example: IS 2185 (Part 2): 1983">
+
+        <div class="actions">
+          <button id="submit-btn" type="submit">Run Recommendation</button>
+          <p id="status-line" class="status-line">Ready.</p>
+        </div>
+      </form>
+
+      <section class="results-grid">
+        <article class="glass-card">
+          <div class="card-header">
+            <h2>Match Summary</h2>
+            <span id="match-decision" class="badge neutral">No query yet</span>
+          </div>
+          <div class="signal-strip">
+            <div>
+              <p class="meta-label">Reasoning Engine</p>
+              <p id="llm-provider" class="meta-value">-</p>
+            </div>
+            <div>
+              <p class="meta-label">Model Family</p>
+              <p id="llm-model" class="meta-value">-</p>
+            </div>
+            <div>
+              <p class="meta-label">Response Mode</p>
+              <p id="llm-mode" class="meta-value">-</p>
+            </div>
+          </div>
+          <div class="rationale-block">
+            <p class="meta-label">Why This Match</p>
+            <p id="rationale" class="rationale">Submit a query to view the explanation.</p>
+          </div>
+        </article>
+
+        <article class="glass-card">
+          <div class="card-header">
+            <h2>Top Standards</h2>
+            <span class="badge accent">Top 5</span>
+          </div>
+          <p class="panel-note">Only the BIS standards are shown here, in ranked order.</p>
+          <ol id="standards-list" class="standards-list"></ol>
+        </article>
+
+        <article class="glass-card">
+          <div class="card-header">
+            <h2>Performance</h2>
+            <span class="badge accent">Live</span>
+          </div>
+          <p class="panel-note">Retrieval and generation timings are separated for quick inspection.</p>
+          <div id="timing-grid" class="timing-grid"></div>
+          <div class="metrics-block">
+            <p class="meta-label">Metrics</p>
+            <div id="metrics-grid" class="metrics-grid">
+              <p class="empty-text">Provide an expected standard to compute metrics.</p>
+            </div>
+          </div>
+        </article>
+      </section>
+    </section>
+  </main>
+
+  <script src="/assets/app.js"></script>
+</body>
+</html>

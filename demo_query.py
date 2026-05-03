@@ -40,6 +40,7 @@ def main() -> None:
         "query": query,
         "expected_standards": expected_standards,
         "retrieved_standards": result["retrieved_standards"],
+        "match_decision": result["match_decision"],
         "top_candidates": result["top_candidates"],
         "rationale": result["rationale"],
         "llm": result["llm"],
@@ -59,6 +60,8 @@ def main() -> None:
     print(f"  model: {result['llm']['model_name']}")
     print(f"  status: {result['llm']['status']}")
     print(f"  generation_mode: {result['llm']['last_generation_mode']}")
+    print()
+    print(f"Match decision: {result['match_decision']}")
     print()
     print("Top standards:")
     for index, candidate in enumerate(result["top_candidates"], start=1):

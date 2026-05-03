@@ -77,24 +77,31 @@ def main() -> None:
     pipeline = BISPipeline(root / "data")
 
     results = []
+    metric_results = []
     for item in items:
-        result = pipeline.run(item["query"])
+        result = pipeline.run(item["query"], generate_rationale=False)
         results.append(
             {
                 "id": item["id"],
                 "query": item["query"],
                 "expected_standards": item.get("expected_standards", []),
                 "retrieved_standards": result["retrieved_standards"],
-                "rationale": result["rationale"],
-                "llm": result["llm"],
-                "timing_breakdown_seconds": result["timing_breakdown_seconds"],
+                "latency_seconds": result["latency_seconds"],
+            }
+        )
+        metric_results.append(
+            {
+                "id": item["id"],
+                "query": item["query"],
+                "expected_standards": item.get("expected_standards", []),
+                "retrieved_standards": result["retrieved_standards"],
                 "latency_seconds": result["latency_seconds"],
             }
         )
 
     output_path.write_text(json.dumps(results, indent=2), encoding="utf-8")
 
-    metrics = evaluate_results(results)
+    metrics = evaluate_results(metric_results)
     if metrics is None:
         print("Inference completed.")
         print("Metrics not computed because expected_standards were not provided for every item.")
