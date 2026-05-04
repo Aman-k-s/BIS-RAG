@@ -234,7 +234,7 @@ Important:
 python inference.py --input data/public_test_set.json --output data/results.json
 ```
 
-`inference.py` writes the judge-safe output format:
+`inference.py` writes only the required output format:
 
 - `id`
 - `query`
