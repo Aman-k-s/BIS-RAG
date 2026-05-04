@@ -75,6 +75,7 @@ def main() -> None:
     payload = json.loads(input_path.read_text(encoding="utf-8"))
     items = payload if isinstance(payload, list) else [payload]
     pipeline = BISPipeline(root / "data")
+    pipeline.run("ordinary portland cement warmup", generate_rationale=False)
 
     results = []
     for item in items:
