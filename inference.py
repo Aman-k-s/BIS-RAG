@@ -78,7 +78,6 @@ def main() -> None:
     pipeline.run("ordinary portland cement warmup", generate_rationale=False)
 
     results = []
-    metric_results = []
     for item in items:
         result = pipeline.run(item["query"], generate_rationale=False)
         results.append(
@@ -90,19 +89,10 @@ def main() -> None:
                 "latency_seconds": result["latency_seconds"],
             }
         )
-        metric_results.append(
-            {
-                "id": item["id"],
-                "query": item["query"],
-                "expected_standards": item.get("expected_standards", []),
-                "retrieved_standards": result["retrieved_standards"],
-                "latency_seconds": result["latency_seconds"],
-            }
-        )
 
     output_path.write_text(json.dumps(results, indent=2), encoding="utf-8")
 
-    metrics = evaluate_results(metric_results)
+    metrics = evaluate_results(results)
     if metrics is None:
         print("Inference completed.")
         print("Metrics not computed because expected_standards were not provided for every item.")

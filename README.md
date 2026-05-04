@@ -1,8 +1,8 @@
-# Norm-Navigator : BIS Standards Recommendation Engine
+# BIS Standards Recommendation Engine
 
-This repository contains a RAG-based BIS standards recommendation system built for the BIS Standards Recommendation Engine hackathon. It ingests the provided BIS building materials PDF, builds a hybrid retrieval stack using FAISS and BM25, supports grounded LLM rationale generation for demo use, and exposes both:
+This repository contains a RAG system for the BIS Standards Recommendation Engine hackathon. It ingests the provided BIS building materials PDF, builds a hybrid retrieval stack using FAISS and BM25, supports grounded LLM rationale generation, and exposes both:
 
-- a strict batch `inference.py` entry point for judge evaluation
+- a strict batch `inference.py` entry point for judge
 - a modern web UI for demo and presentation use
 
 ## 1. Submission structure
@@ -14,7 +14,7 @@ This repo follows the required hackathon layout:
 - `inference.py`: mandatory judge entry point
 - `requirements.txt`: environment dependencies
 - `eval_script.py`: evaluation script
-- `presentation.pdf`
+- `presentation.pdf` 
 
 ## 2. Repository overview
 
@@ -103,96 +103,38 @@ Important safety rules:
 
 ## 4. Setup instructions
 
-### Python
+### Prerequisites
 
-Use the same Python interpreter consistently across:
+- Python 3.10 or newer (use the same interpreter consistently for install, setup, and run)
+- The official BIS dataset PDF placed at `data/dataset.pdf` before running `setup.py`
+- Internet access on first run (the embedding model `sentence-transformers/all-MiniLM-L6-v2` is downloaded once and cached locally)
 
-- dependency installation
-- `setup.py`
-- `inference.py`
-- `demo_query.py`
-- `uvicorn`
+### Step 1 — Create and activate a virtual environment (recommended)
 
-If multiple Python environments are installed on your machine, do not mix them. Most runtime issues in this project happen when packages are installed in one interpreter and commands are run from another.
-
-### Create virtual environment
 ```bash
 python -m venv .venv
-```
-
-Activate the virtual environment:
-
-**On Windows:**
-```bash
-.venv\Scripts\activate
-```
-
-**On macOS/Linux:**
-```bash
+# Windows (PowerShell)
+.\.venv\Scripts\Activate.ps1
+# macOS / Linux
 source .venv/bin/activate
 ```
 
-### Install dependencies
+### Step 2 — Install dependencies
 
 ```bash
+python -m pip install --upgrade pip
 python -m pip install -r requirements.txt
 ```
 
-### Build retrieval artifacts
+### Step 3 — Build retrieval artifacts
+
+Make sure `data/dataset.pdf` exists, then run:
 
 ```bash
 python setup.py
 ```
 
-### What `setup.py` does
-
-`setup.py` is the offline preparation step for the system. It does not answer queries directly. Its job is to transform the raw BIS PDF into the structured and indexed artifacts required for fast runtime retrieval.
-
-When you run:
-
-```bash
-python setup.py
-```
-
-the script performs these steps:
-
-1. Validates that `data/dataset.pdf` exists.
-2. Runs `src/ingest.py` to parse the BIS PDF into structured BIS standard records.
-3. Writes the parsed output to `data/standards_db.json`.
-4. Runs `src/indexer.py` to build:
-   - sentence-transformer embeddings
-   - FAISS vector index
-   - BM25 keyword index
-   - metadata files connecting vector rows back to BIS standard IDs
-
-Generated artifacts:
-
-- `data/standards_db.json`
-- `data/faiss_index.bin`
-- `data/bm25_index.pkl`
-- `data/index_ids.json`
-- `data/index_metadata.json`
-
-Important behavior:
-
-- if all required artifacts already exist, `setup.py` skips rebuilding
-- this makes repeated local runs much faster
-- if you want to force a rebuild, delete the generated artifact files and rerun `python setup.py`
-
-When to run `setup.py`:
-
-- on first project setup
-- after updating `data/dataset.pdf`
-- after changing parsing logic in `src/ingest.py`
-- after changing indexing logic in `src/indexer.py`
-
-When you usually do not need to rerun it:
-
-- after UI-only changes
-- after README changes
-- after changing only rationale presentation logic
-- after changing only output formatting in `inference.py`
-
+This produces `standards_db.json`, `faiss_index.bin`, `bm25_index.pkl`, `index_ids.json`, and `index_metadata.json` inside `data/`. If those files already exist, `setup.py` skips the rebuild.
 ## 5. API key setup
 
 The project supports:
@@ -200,7 +142,7 @@ The project supports:
 - Groq
 - Gemini
 
-Create your `.env`
+Create your `.env` 
 
 Then fill one or both variables:
 
@@ -224,37 +166,26 @@ Get a key from:
 - docs: https://ai.google.dev/gemini-api/docs/api-key
 
 Important:
-
 - every teammate or judge machine that wants LLM support must create its own local `.env`
 - without `.env`, retrieval still works, but LLM rationale falls back to a non-LLM explanation
 
-## 6. Inference
-
+## 6.inference
 ```bash
 python inference.py --input data/public_test_set.json --output data/results.json
 ```
-
 `inference.py` writes only the required output format:
 
 - `id`
-- `query`
-- `expected_standards`
 - `retrieved_standards`
 - `latency_seconds`
 
-Important design note:
-
-- `inference.py` is retrieval-only for latency stability
-- LLM calls are used for demo/UI rationale, not for judge batch inference
 
 ## 7. Evaluation
 
-Use the provided evaluation logic:
-
+Use the provided evaluation logic (the script lives in the repo root):
 ```bash
-python data/eval_script.py --results data/results.json
+python eval_script.py --results data/results.json
 ```
-
 Metrics:
 
 - `Hit Rate@3`: at least one correct standard appears in top 3
@@ -264,11 +195,9 @@ Metrics:
 ## 8. Interactive CLI demo
 
 Run:
-
 ```bash
 python demo_query.py --require-llm
 ```
-
 It will prompt for:
 
 - query
@@ -285,7 +214,6 @@ It shows:
 ## 9. Web app
 
 Start the backend:
-
 ```bash
 python -m uvicorn app:app --reload
 ```
@@ -293,6 +221,11 @@ python -m uvicorn app:app --reload
 Then open:
 
 - http://127.0.0.1:8000
+
+Notes:
+
+- On first launch the app will auto-run `setup.py` if any retrieval artifact under `data/` is missing, so the very first start may take longer.
+- Without a `.env` file the app still works — the LLM rationale gracefully falls back to a deterministic explanation.
 
 The web app includes:
 
@@ -347,25 +280,10 @@ The heaviest local step is embedding/index build during `setup.py`. Runtime infe
 - LLM rationale exists for demo, UI, and judge-facing explanation quality
 - The pipeline can abstain with `no-confident-match` when retrieval confidence is weak instead of forcing a bad standard
 
-## 13. Future scope
-
-- Structured standard fingerprinting:
-  Rather than embedding only raw text, each BIS standard can be converted into a semi-structured fingerprint containing material type, product form, physical state, application domain, and regulatory scope. A query can be parsed into the same dimensions and scored using dimensional overlap along with semantic similarity. This is especially valuable for closely related families such as `IS 2185 Part 1`, `Part 2`, and `Part 3`.
-- MSE-tuned query normalization:
-  A curated mapping layer can translate small-business product language into official BIS terminology before retrieval.
-- Compliance-chain reasoning:
-  The system can be extended to surface companion standards when one standard depends on another, turning the tool into a more complete compliance advisor.
-- Contrastive explanation:
-  The rationale layer can explain why the top result was chosen over the runner-up to improve transparency and manual judge confidence.
-- Stronger confidence-aware abstention:
-  The current confidence gate can be calibrated further so uncertain cases return fewer standards instead of filling the list with weak matches.
-- Additional performance engineering:
-  Warm-up strategies, repeated-query caching, quantized embedding inference, and smarter LLM retry policies can reduce latency in larger-scale deployments.
-
-## 14. Recommended final submission command sequence
+## 13. Recommended final submission command sequence
 
 ```bash
 python setup.py
 python inference.py --input data/public_test_set.json --output data/results.json
-python data/eval_script.py --results data/results.json
+python eval_script.py --results data/results.json
 ```

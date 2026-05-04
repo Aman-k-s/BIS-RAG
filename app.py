@@ -24,6 +24,11 @@ STATIC_DIR = ROOT / "web"
 ensure_artifacts(ROOT)
 pipeline = BISPipeline(ROOT / "data")
 
+try:
+    pipeline.run("warmup", generate_rationale=False)
+except Exception:
+    pass
+
 app = FastAPI(title="BIS Standards Recommendation Engine", version="1.0.0")
 app.add_middleware(
     CORSMiddleware,
