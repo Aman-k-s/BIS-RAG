@@ -39,7 +39,10 @@ class HybridRetriever:
             self.bm25: BM25Okapi = pickle.load(handle)
 
         model_name = self.index_metadata["embedding_model"]
-        self.embedding_model = SentenceTransformer(model_name, local_files_only=True)
+        try:
+            self.embedding_model = SentenceTransformer(model_name, local_files_only=True)
+        except Exception:
+            self.embedding_model = SentenceTransformer(model_name)
 
     def section_boost(self, query: str, record: Dict[str, object]) -> float:
         lower_query = query.lower()
