@@ -3,93 +3,188 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BIS Standards Recommendation Engine</title>
+  <meta name="color-scheme" content="light">
+  <title>Norm-Navigator — BIS Standard Recommendation Engine</title>
+  <link rel="preconnect" href="https://rsms.me/">
+  <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
   <link rel="stylesheet" href="/assets/styles.css">
 </head>
 <body>
-  <div class="background-grid"></div>
-  <div class="background-glow background-glow-left"></div>
-  <div class="background-glow background-glow-right"></div>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="8.5"/>
+            <path d="M12 5.5 L14.2 12 L12 13.6 L9.8 12 Z" fill="currentColor" stroke="none"/>
+            <path d="M12 18.5 L9.8 12 L12 10.4 L14.2 12 Z" fill="currentColor" fill-opacity="0.45" stroke="none"/>
+          </svg>
+        </span>
+        <span class="brand-text">Norm-Navigator</span>
+      </div>
+      <div class="topbar-actions">
+        <button id="history-btn" type="button" class="ghost-btn" aria-haspopup="dialog" aria-controls="history-drawer" aria-expanded="false">
+          <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">
+            <circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/>
+            <path d="M12 7v5l3 2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+          <span>History</span>
+          <span id="history-count" class="brand-count" hidden>0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
   <main class="shell">
     <section class="hero">
-      <div class="hero-copy">
-        <p class="eyebrow">BIS Hackathon RAG Demo</p>
-        <h1>Find the right BIS standard in seconds.</h1>
-        <p class="lede">Hybrid retrieval for compliance search, grounded reasoning for explainability, and a submission-safe pipeline behind the scenes.</p>
-      </div>
-      <div class="hero-panel">
-        <div class="chip">Hybrid Retrieval</div>
-        <div class="chip">Grounded LLM Reasoning</div>
-        <div class="chip">Live Latency View</div>
-      </div>
+      <h1 class="hero-title">Find the right BIS standard in seconds.</h1>
+      <p class="hero-desc">
+        Norm-Navigator blends dense and sparse retrieval over the BIS catalogue, then explains
+        its pick with grounded reasoning — so you know <em>why</em> a standard fits, not just which one.
+      </p>
     </section>
 
-    <section class="workspace">
-      <form id="query-form" class="query-card">
-        <label class="label" for="query">Product / compliance query</label>
-        <textarea id="query" name="query" rows="5" placeholder="Example: Which BIS standard governs lightweight concrete masonry units with drying shrinkage and moisture movement requirements?"></textarea>
+    <div class="workspace">
+      <form id="query-form" class="query-card" autocomplete="off">
+        <header class="card-head">
+          <h2 class="card-title">Ask Norm</h2>
+        </header>
 
-        <label class="label" for="expected_standard">Expected standard for scoring (optional)</label>
-        <input id="expected_standard" name="expected_standard" type="text" placeholder="Example: IS 2185 (Part 2): 1983">
+        <label class="label" for="query">
+          Your question
+          <span class="label-hint">Describe the product or compliance question.</span>
+        </label>
+        <textarea
+          id="query"
+          name="query"
+          rows="4"
+          placeholder="e.g. Lightweight concrete masonry units with drying shrinkage and moisture movement requirements"
+        ></textarea>
+
+        <div id="expected-wrap" class="expected-wrap" hidden>
+          <label class="label" for="expected_standard">
+            Expected standard
+            <span class="label-hint">Used to compute precision/recall against your gold answer.</span>
+          </label>
+          <input
+            id="expected_standard"
+            name="expected_standard"
+            type="text"
+            placeholder="e.g. IS 2185 (Part 2): 1983"
+          >
+        </div>
 
         <div class="actions">
-          <button id="submit-btn" type="submit">Run Recommendation</button>
-          <p id="status-line" class="status-line">Ready.</p>
+          <button id="submit-btn" type="submit">
+            <span class="btn-spinner" aria-hidden="true"></span>
+            <span class="btn-label">Find standard</span>
+          </button>
+          <button id="toggle-expected" type="button" class="link-btn" aria-expanded="false" aria-controls="expected-wrap">
+            + Score this query
+          </button>
+          <p id="status-line" class="status-line" role="status" hidden></p>
         </div>
       </form>
 
-      <section class="results-grid">
-        <article class="glass-card">
-          <div class="card-header">
-            <h2>Match Summary</h2>
+      <section id="result-card" class="result-card" aria-live="polite">
+        <header class="card-head">
+          <h2 class="card-title">Result</h2>
+          <div id="result-meta-row" class="result-meta" hidden>
             <span id="match-decision" class="badge neutral">No query yet</span>
+            <span id="latency-pill" class="meta-pill" hidden></span>
+            <span id="model-pill" class="meta-pill" hidden></span>
           </div>
-          <div class="signal-strip">
-            <div>
-              <p class="meta-label">Reasoning Engine</p>
-              <p id="llm-provider" class="meta-value">-</p>
+        </header>
+
+        <div id="result-empty" class="result-empty">
+          <span class="result-empty-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="6.5"/>
+              <path d="M16 16l4.5 4.5"/>
+            </svg>
+          </span>
+          <p class="result-empty-title">Norm is standing by.</p>
+          <p class="result-empty-sub">Pop a question into the box on the left and the matching standard will land right here.</p>
+        </div>
+
+        <div id="result-body" class="result-body" hidden>
+          <div class="top-hit">
+            <p class="top-hit-label">Top match</p>
+            <div class="top-hit-id-row">
+              <strong id="top-hit-id" class="top-hit-id">—</strong>
+              <button
+                type="button"
+                class="copy-btn"
+                data-copy-target="top-hit-id"
+                aria-label="Copy standard ID"
+                hidden
+              >
+                <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+                  <rect x="8" y="8" width="12" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/>
+                  <path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2" fill="none" stroke="currentColor" stroke-width="1.8"/>
+                </svg>
+                <span class="copy-label">Copy</span>
+              </button>
             </div>
-            <div>
-              <p class="meta-label">Model Family</p>
-              <p id="llm-model" class="meta-value">-</p>
-            </div>
-            <div>
-              <p class="meta-label">Response Mode</p>
-              <p id="llm-mode" class="meta-value">-</p>
-            </div>
+            <p id="top-hit-title" class="top-hit-title"></p>
           </div>
+
           <div class="rationale-block">
-            <p class="meta-label">Why This Match</p>
-            <p id="rationale" class="rationale">Submit a query to view the explanation.</p>
+            <p class="section-label">Why this matches</p>
+            <p id="rationale" class="rationale">—</p>
           </div>
-        </article>
 
-        <article class="glass-card">
-          <div class="card-header">
-            <h2>Top Standards</h2>
-            <span class="badge accent">Top 5</span>
-          </div>
-          <p class="panel-note">Only the BIS standards are shown here, in ranked order.</p>
-          <ol id="standards-list" class="standards-list"></ol>
-        </article>
+          <details id="result-details" class="result-details">
+            <summary>
+              <span class="summary-text">Show all candidates, timings, and metrics</span>
+              <svg class="chev" viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">
+                <path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </summary>
 
-        <article class="glass-card">
-          <div class="card-header">
-            <h2>Performance</h2>
-            <span class="badge accent">Live</span>
-          </div>
-          <p class="panel-note">Retrieval and generation timings are separated for quick inspection.</p>
-          <div id="timing-grid" class="timing-grid"></div>
-          <div class="metrics-block">
-            <p class="meta-label">Metrics</p>
-            <div id="metrics-grid" class="metrics-grid">
-              <p class="empty-text">Provide an expected standard to compute metrics.</p>
+            <div class="details-section">
+              <p class="section-label">All candidates</p>
+              <ol id="standards-list" class="standards-list"></ol>
             </div>
-          </div>
-        </article>
+
+            <div class="details-section">
+              <p class="section-label">Per-stage timings</p>
+              <div id="timing-grid" class="tile-grid"></div>
+            </div>
+
+            <div class="details-section" id="metrics-section" hidden>
+              <p class="section-label">Eval metrics</p>
+              <div id="metrics-grid" class="tile-grid"></div>
+            </div>
+          </details>
+        </div>
       </section>
-    </section>
+    </div>
   </main>
+
+  <div id="history-scrim" class="history-scrim" hidden></div>
+  <aside
+    id="history-drawer"
+    class="history-drawer"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="history-drawer-title"
+    hidden
+  >
+    <header class="history-head">
+      <h2 id="history-drawer-title">History</h2>
+      <button type="button" class="icon-btn" id="history-close" aria-label="Close history">
+        <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+          <path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </header>
+    <ul id="history-list" class="history-list"></ul>
+    <footer class="history-footer">
+      <button type="button" id="history-clear" class="link-btn danger" hidden>Clear all</button>
+      <span class="history-note">Saved on this device.</span>
+    </footer>
+  </aside>
 
   <script src="/assets/app.js"></script>
 </body>
