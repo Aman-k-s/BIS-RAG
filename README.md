@@ -1,4 +1,4 @@
-# BIS Standards Recommendation Engine
+# Norm-Navigator : BIS Standards Recommendation Engine
 
 This repository contains a RAG-based BIS standards recommendation system built for the BIS Standards Recommendation Engine hackathon. It ingests the provided BIS building materials PDF, builds a hybrid retrieval stack using FAISS and BM25, supports grounded LLM rationale generation for demo use, and exposes both:
 
