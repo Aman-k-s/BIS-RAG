@@ -139,7 +139,7 @@ This produces `standards_db.json`, `faiss_index.bin`, `bm25_index.pkl`, `index_i
 
 The project supports:
 
-- Groq
+- Groq (recommened)
 - Gemini
 
 Create your `.env` 
