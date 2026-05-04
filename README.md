@@ -287,3 +287,4 @@ python setup.py
 python inference.py --input data/public_test_set.json --output data/results.json
 python eval_script.py --results data/results.json
 ```
+Demo video: https://www.youtube.com/watch?v=zNhsZ3amIwc&feature=youtu.be
