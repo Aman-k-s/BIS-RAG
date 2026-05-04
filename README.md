@@ -1,5 +1,8 @@
 # BIS Standards Recommendation Engine
 
+Demo Video: https://youtu.be/3Z62CKxNYe4
+
+
 This repository contains a RAG system for the BIS Standards Recommendation Engine hackathon. It ingests the provided BIS building materials PDF, builds a hybrid retrieval stack using FAISS and BM25, supports grounded LLM rationale generation, and exposes both:
 
 - a strict batch `inference.py` entry point for judge
@@ -287,4 +290,4 @@ python setup.py
 python inference.py --input data/public_test_set.json --output data/results.json
 python eval_script.py --results data/results.json
 ```
-Demo video: https://www.youtube.com/watch?v=zNhsZ3amIwc&feature=youtu.be
+
