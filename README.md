@@ -1,5 +1,7 @@
 # BIS Standards Recommendation Engine
 
+USE THE MAIN BRANCH FOR JUDGEMENT PURPUSES
+
 This repository contains a RAG system for the BIS Standards Recommendation Engine hackathon. It ingests the provided BIS building materials PDF, builds a hybrid retrieval stack using FAISS and BM25, supports grounded LLM rationale generation, and exposes both:
 
 - a strict batch `inference.py` entry point for judge
